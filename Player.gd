@@ -16,9 +16,15 @@ func _ready():
 	# initialize cells
 
 	nucleus = add_cell(packed_nucleus, Vector2(0, 0))
-	add_cell(packed_brain, Vector2(-1, 0))
+	var b1 = add_cell(packed_brain, Vector2(0, -1))
+	var b2 = add_cell(packed_brain, Vector2(-1, 1))
+	var b3 = add_cell(packed_brain, Vector2(-1, 0))
 	add_cell(packed_flagellum, Vector2(-1, -1))
 	add_cell(packed_flagellum, Vector2(-2, 1))
+
+	b1.key = "D"
+	b2.key = "A"
+	b3.key = "W"
 
 	if is_network_master():
 		set_process_input(true)
@@ -87,10 +93,12 @@ func add_cell(packed_cell, hexpos):
 		for neighbor in get_neighbor_cells(cell):
 			if not neighbor.is_in_group("neurons"):
 				cell.connect("activated", neighbor, "activate")
+				cell.connect("deactivated", neighbor, "deactivate")
 	else:
 		for neighbor in get_neighbor_cells(cell):
 			if neighbor.is_in_group("neurons"):
 				neighbor.connect("activated", cell, "activate")
+				neighbor.connect("deactivated", cell, "deactivate")
 
 	return cell
 
