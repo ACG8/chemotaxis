@@ -18,8 +18,10 @@ func _ready():
 
 remotesync func activate():
 	is_active = true
+	get_node("Sprite").modulate = Color(0, 0, 1)
 	emit_signal("activated")
 
 remotesync func deactivate():
 	is_active = false
+	get_node("Sprite").modulate = Color(1, 1, 1)
 	emit_signal("deactivated")
