@@ -12,13 +12,14 @@ func _ready():
 	rset_config("rotation", MultiplayerAPI.RPC_MODE_PUPPET)
 	rset_config("position", MultiplayerAPI.RPC_MODE_PUPPET)
 
+	var area_2d = get_node("Area2D")
+
 	if is_network_master():
-		set_process_input(true)
-		var area_2d = get_node("Area2D")
 		area_2d.connect("clicked", self, "_on_clicked")
 		area_2d.connect("unclicked", self, "_on_unclicked")
 	else:
-		set_process_input(false)
+		area_2d.queue_free()
+
 
 func _on_clicked():
 	get_node("Sprite").modulate = Color(1, 0, 0)

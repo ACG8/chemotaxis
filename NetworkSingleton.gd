@@ -54,19 +54,19 @@ func _server_disconnected():
 	peers.clear()
 	get_tree().change_scene("res://Menu.tscn")
 
-func create_player(peerId):
+func create_player(peer_id):
 	var spawn
-	if(peerId == 1):
+	if(peer_id == 1):
 		spawn = levelInstance.get_node("P1_Spawn")
 	else:
-		spawn = levelInstance.get_node("P1_Spawn")
+		spawn = levelInstance.get_node("P2_Spawn")
 
-	var newPlayer = playerScene.instance();
-	newPlayer.set_network_master(peerId)
-	newPlayer.name = String(peerId)
-	newPlayer.position = spawn.position
-	newPlayer.rotation = spawn.rotation
-	levelInstance.add_child(newPlayer)
+	var new_player = playerScene.instance();
+	new_player.set_network_master(peer_id)
+	new_player.name = String(peer_id)
+	new_player.position = spawn.position
+	new_player.rotation = spawn.rotation
+	levelInstance.add_child(new_player)
 
-func destroy_player(peerId):
-	levelInstance.remove_node(levelInstance.get_node(String(peerId)))
+func destroy_player(peer_id):
+	levelInstance.remove_node(levelInstance.get_node(String(peer_id)))

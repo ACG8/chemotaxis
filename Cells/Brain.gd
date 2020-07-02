@@ -14,15 +14,17 @@ const KEYMAP = {
 }
 
 func _process(delta):
-	var key_pressed = Input.is_key_pressed(KEYMAP[key])
-	if key_pressed and not is_active:
-		activate()
-	elif not key_pressed and is_active:
-		deactivate()
+	if is_network_master():
+		var key_pressed = Input.is_key_pressed(KEYMAP[key])
+		if key_pressed and not is_active:
+			activate()
+		elif not key_pressed and is_active:
+			deactivate()
 
 func _input(event):
-	var area = get_node("Area2D")
-	if area.is_clicked:
-		var input_key = event.as_text()
-		if input_key in KEYMAP:
-			key = input_key
+	if is_network_master():
+		var area = get_node("Area2D")
+		if area.is_clicked:
+			var input_key = event.as_text()
+			if input_key in KEYMAP:
+				key = input_key
