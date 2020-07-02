@@ -131,19 +131,12 @@ func _input(event):
 	if Input.is_action_just_released("ui_select"):
 		clear_stubs()
 
-func _process(delta):
-	compute_center_mass()
-		# Display building buttons
-		# get adjacent positions
-		# for each adjacent position, display a button there
-	pass
-
 remotesync func die():
 	self.visible = false
 
 remotesync func respawn():
 	var spawn
-	if(self.get_network_master() == 1):
+	if self.get_network_master() == 1:
 		spawn = get_parent().get_node("P1_Spawn")
 	else:
 		spawn = get_parent().get_node("P2_Spawn")
