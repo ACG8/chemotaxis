@@ -1,16 +1,16 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Cells/Nucleus.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Player.gd" type="Script" id=2]
 [ext_resource path="res://Cells/Flagellum.tscn" type="PackedScene" id=3]
 [ext_resource path="res://GUI/StubCell.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Cells/Brain.tscn" type="PackedScene" id=5]
 
 [node name="Player" type="RigidBody2D"]
 script = ExtResource( 2 )
 packed_nucleus = ExtResource( 1 )
 packed_flagellum = ExtResource( 3 )
+packed_brain = ExtResource( 5 )
 packed_stub = ExtResource( 4 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
-rotating = true
-current = true

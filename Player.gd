@@ -9,14 +9,16 @@ var nucleus
 var cells: Dictionary
 export var packed_nucleus: PackedScene
 export var packed_flagellum: PackedScene
+export var packed_brain: PackedScene
 export var packed_stub: PackedScene
 
 func _ready():
 	# initialize cells
 
 	nucleus = add_cell(packed_nucleus, Vector2(0, 0))
-	add_cell(packed_flagellum, Vector2(0, 1))
-	add_cell(packed_flagellum, Vector2(-1, 0))
+	add_cell(packed_brain, Vector2(-1, 0))
+	add_cell(packed_flagellum, Vector2(-1, -1))
+	add_cell(packed_flagellum, Vector2(-2, 1))
 
 	if is_network_master():
 		set_process_input(true)
@@ -80,6 +82,16 @@ func add_cell(packed_cell, hexpos):
 	cell.position = (hexpos.x * HEX_BASIS_A + hexpos.y * HEX_BASIS_B) * CELL_SEPARATION + origin
 	cell.hexpos = hexpos
 	add_child(cell)
+	# connect to control cells
+	if cell.is_in_group("neurons"):
+		for neighbor in get_neighbor_cells(cell):
+			if not neighbor.is_in_group("neurons"):
+				cell.connect("activated", neighbor, "activate")
+	else:
+		for neighbor in get_neighbor_cells(cell):
+			if neighbor.is_in_group("neurons"):
+				neighbor.connect("activated", cell, "activate")
+
 	return cell
 
 func create_blank_cell(hexpos):
