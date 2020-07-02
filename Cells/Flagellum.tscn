@@ -6,6 +6,7 @@
 
 [node name="Flagellum" instance=ExtResource( 1 )]
 script = ExtResource( 3 )
+strength = 50
 
 [node name="Sprite" parent="." index="0"]
 texture = ExtResource( 2 )
