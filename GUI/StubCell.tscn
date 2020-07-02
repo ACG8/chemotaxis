@@ -6,10 +6,11 @@
 [node name="TextureButton" type="TextureButton" groups=[
 "ui",
 ]]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_pivot_offset = Vector2( 16, 16 )
+texture_normal = ExtResource( 1 )
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="Sprite" type="Sprite" parent="."]
-texture = ExtResource( 1 )

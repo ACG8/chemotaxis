@@ -101,13 +101,16 @@ func _integrate_forces(state):
 	if center_mass.length() > 1:
 		state.transform.origin += center_mass
 		for node in get_children():
-			if node.is_in_group("cells") or node.is_in_group("ui"):
+			if node.is_in_group("cells"):
 				node.position -= center_mass
+			elif node.is_in_group("ui"):
+				node.rect_position -= center_mass
 
-func display_stub(hexpos):
+func display_stub(hexpos: Vector2):
 	var stub = packed_stub.instance()
 	var origin = nucleus.position
-	stub.rect_position = (hexpos.x * HEX_BASIS_A + hexpos.y * HEX_BASIS_B) * CELL_SEPARATION + origin
+	var realpos = (hexpos.x * HEX_BASIS_A + hexpos.y * HEX_BASIS_B) * CELL_SEPARATION
+	stub.rect_position = realpos - stub.rect_size / 2 + origin
 	stub.hexpos = hexpos
 	add_child(stub)
 	stub.connect("clicked", self, "create_blank_cell")
