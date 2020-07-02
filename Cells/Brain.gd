@@ -13,16 +13,10 @@ const KEYMAP = {
 	"Z": KEY_Z
 }
 
-func _input(event):
-#	var text = get_node("LineEdit").text
-#	var key = KEYMAP[text]
-	if event is InputEventKey and event.scancode == KEYMAP[key]:
-		if not is_active:
-			rpc("activate")
-	else:
-		if is_active:
-			rpc("deactivate")
-#	if event.is_action_pressed(key):
-#		rpc("activate")
-#	if event.is_action_released(key):
-#		rpc("deactivate")
+func _process(delta):
+	var key_pressed = Input.is_key_pressed(KEYMAP[key])
+	if key_pressed and not is_active:
+		activate()
+	elif not key_pressed and is_active:
+		deactivate()
+

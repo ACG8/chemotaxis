@@ -90,17 +90,26 @@ func add_cell(packed_cell, hexpos):
 	add_child(cell)
 	# connect to control cells
 	if cell.is_in_group("neurons"):
-		for neighbor in get_neighbor_cells(cell):
-			if not neighbor.is_in_group("neurons"):
-				cell.connect("activated", neighbor, "activate")
-				cell.connect("deactivated", neighbor, "deactivate")
-	else:
-		for neighbor in get_neighbor_cells(cell):
-			if neighbor.is_in_group("neurons"):
-				neighbor.connect("activated", cell, "activate")
-				neighbor.connect("deactivated", cell, "deactivate")
-
+		cell.connect("activity_update", self, "_update_activity")
 	return cell
+
+func _update_activity():
+	for cell in cells.values():
+		if not cell.is_in_group("neurons"):
+			update_active_state(cell)
+
+func update_active_state(cell):
+	var active_neuron = false
+	for neighbor in get_neighbor_cells(cell):
+		if neighbor.is_in_group("neurons") and neighbor.is_active:
+			active_neuron = true
+			break
+	if cell.is_active and not active_neuron:
+		cell.rpc("deactivate")
+		return
+	if not cell.is_active and active_neuron:
+		cell.rpc("activate")
+		return
 
 func create_blank_cell(hexpos):
 	add_cell(packed_nucleus, hexpos)

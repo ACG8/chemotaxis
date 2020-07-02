@@ -3,9 +3,8 @@ extends CollisionShape2D
 export (Array) onready var neighbors = []
 var hexpos
 var is_active = false
-signal activated
-signal deactivated
 
+signal activity_update
 
 func _ready():
 	rset_config("rotation", MultiplayerAPI.RPC_MODE_PUPPET)
@@ -19,9 +18,9 @@ func _ready():
 remotesync func activate():
 	is_active = true
 	get_node("Sprite").modulate = Color(0, 0, 1)
-	emit_signal("activated")
+	emit_signal("activity_update")
 
 remotesync func deactivate():
 	is_active = false
 	get_node("Sprite").modulate = Color(1, 1, 1)
-	emit_signal("deactivated")
+	emit_signal("activity_update")
