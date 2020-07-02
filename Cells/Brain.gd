@@ -20,3 +20,9 @@ func _process(delta):
 	elif not key_pressed and is_active:
 		deactivate()
 
+func _input(event):
+	var area = get_node("Area2D")
+	if area.is_clicked:
+		var input_key = event.as_text()
+		if input_key in KEYMAP:
+			key = input_key
