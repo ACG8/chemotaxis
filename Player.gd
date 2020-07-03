@@ -7,10 +7,14 @@ const CELL_SEPARATION = 50
 
 var nucleus
 var cells: Dictionary
-export var packed_nucleus: PackedScene
-export var packed_flagellum: PackedScene
-export var packed_brain: PackedScene
 export var packed_stub: PackedScene
+export (Array, PackedScene) var packed_cells
+
+enum {
+	CELL_NUCLEUS,
+	CELL_NEURON,
+	CELL_FLAGELLUM,
+}
 
 puppet var target_transform
 puppet var target_velocity
@@ -19,19 +23,21 @@ const LERP_SPEED = 5
 func _ready():
 	# initialize cells
 
-	nucleus = add_cell(packed_nucleus, Vector2(0, 0))
-	var b1 = add_cell(packed_brain, Vector2(0, -1))
-	var b2 = add_cell(packed_brain, Vector2(-1, 1))
-	var b3 = add_cell(packed_brain, Vector2(-1, 0))
-	add_cell(packed_flagellum, Vector2(-1, -1))
-	add_cell(packed_flagellum, Vector2(-2, 1))
+	nucleus = add_cell(CELL_NUCLEUS, Vector2(0, 0))
+	var b1 = add_cell(CELL_NEURON, Vector2(0, -1))
+	var b2 = add_cell(CELL_NEURON, Vector2(-1, 1))
+	var b3 = add_cell(CELL_NEURON, Vector2(-1, 0))
+	add_cell(CELL_FLAGELLUM, Vector2(-1, -1))
+	add_cell(CELL_FLAGELLUM, Vector2(-2, 1))
+	add_cell(CELL_FLAGELLUM, Vector2(-2, 0))
 
 	b1.key = "D"
 	b2.key = "A"
 	b3.key = "W"
 
 	if is_network_master():
-		get_node("Camera2D").make_current()
+#		get_node("Camera2D").make_current()
+		pass
 	else:
 		set_process_input(false)
 
@@ -88,8 +94,8 @@ func get_connected_cells():
 		unexamined_cells.remove(0)
 	return connected_cells
 
-func add_cell(packed_cell, hexpos):
-	var cell = packed_cell.instance()
+remotesync func add_cell(index: int, hexpos: Vector2):
+	var cell = packed_cells[index].instance()
 	cells[hexpos.round()] = cell
 	var origin = Vector2(0, 0)
 	if nucleus != null:
@@ -99,8 +105,9 @@ func add_cell(packed_cell, hexpos):
 	cell.set_network_master(get_network_master())
 	add_child(cell)
 	# connect to control cells
-	if cell.is_in_group("neurons"):
-		cell.connect("activity_update", self, "_update_activity")
+	if is_network_master():
+		if cell.is_in_group("neurons"):
+			cell.connect("activity_update", self, "_update_activity")
 	return cell
 
 func _update_activity():
@@ -122,7 +129,7 @@ func update_active_state(cell):
 		return
 
 func create_blank_cell(hexpos):
-	add_cell(packed_nucleus, hexpos)
+	rpc("add_cell", CELL_FLAGELLUM, hexpos)
 	clear_stubs()
 	display_stubs()
 

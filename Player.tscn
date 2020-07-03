@@ -8,10 +8,8 @@
 
 [node name="Player" type="RigidBody2D"]
 script = ExtResource( 2 )
-packed_nucleus = ExtResource( 1 )
-packed_flagellum = ExtResource( 3 )
-packed_brain = ExtResource( 5 )
 packed_stub = ExtResource( 4 )
+packed_cells = [ ExtResource( 1 ), ExtResource( 5 ), ExtResource( 3 ) ]
 
 [node name="Camera2D" type="Camera2D" parent="."]
 rotating = true
