@@ -4,7 +4,6 @@
 [ext_resource path="res://Cells/flagellum.png" type="Texture" id=2]
 [ext_resource path="res://Cells/Flagellum.gd" type="Script" id=3]
 
-
 [node name="Flagellum" instance=ExtResource( 1 )]
 script = ExtResource( 3 )
 strength = 50

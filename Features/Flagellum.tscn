@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Features/Feature.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Features/flagellum.png" type="Texture" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 32.6313, 4.52465 )
+
+[node name="Feature" instance=ExtResource( 1 )]
+separation = 32
+
+[node name="Sprite" parent="." index="0"]
+position = Vector2( 32.2173, -0.0464668 )
+rotation = 1.5708
+texture = ExtResource( 2 )
+
+[node name="CollisionShape2D" parent="." index="1"]
+position = Vector2( 32.6251, 0.291439 )
+shape = SubResource( 1 )

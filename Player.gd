@@ -3,15 +3,16 @@ extends RigidBody2D
 const HEX_BASIS_A = Vector2(0, -1)
 const HEX_BASIS_B = Vector2(sqrt(3) * 0.5, -0.5)
 const HEX_GRID_SIZE = 128
-const CELL_SEPARATION = 50
+const CELL_SEPARATION = 64
 
 var nucleus
 var cells: Dictionary
+export var packed_feature_menu: PackedScene
 export var packed_stub: PackedScene
 export (Array, PackedScene) var packed_cells
 
 enum {
-	CELL_NUCLEUS,
+	CELL,
 	CELL_NEURON,
 	CELL_FLAGELLUM,
 }
@@ -23,21 +24,22 @@ const LERP_SPEED = 5
 func _ready():
 	# initialize cells
 
-	nucleus = add_cell(CELL_NUCLEUS, Vector2(0, 0))
-	var b1 = add_cell(CELL_NEURON, Vector2(0, -1))
-	var b2 = add_cell(CELL_NEURON, Vector2(-1, 1))
-	var b3 = add_cell(CELL_NEURON, Vector2(-1, 0))
-	add_cell(CELL_FLAGELLUM, Vector2(-1, -1))
-	add_cell(CELL_FLAGELLUM, Vector2(-2, 1))
-	add_cell(CELL_FLAGELLUM, Vector2(-2, 0))
+	nucleus = add_cell(CELL, Vector2(0, 0))
+	var b1 = add_cell(CELL, Vector2(0, -1))
+	var b2 = add_cell(CELL, Vector2(-1, 1))
+	var b3 = add_cell(CELL, Vector2(-1, 0))
+	add_cell(CELL, Vector2(-1, -1))
+	add_cell(CELL, Vector2(-2, 1))
+	add_cell(CELL, Vector2(-2, 0))
 
-	b1.key = "D"
-	b2.key = "A"
-	b3.key = "W"
+#	b1.key = "D"
+#	b2.key = "A"
+#	b3.key = "W"
 
 	if is_network_master():
 #		get_node("Camera2D").make_current()
-		pass
+		var feature_menu = packed_feature_menu.instance()
+		add_child(feature_menu)
 	else:
 		set_process_input(false)
 
@@ -129,7 +131,7 @@ func update_active_state(cell):
 		return
 
 func create_blank_cell(hexpos):
-	rpc("add_cell", CELL_FLAGELLUM, hexpos)
+	rpc("add_cell", CELL, hexpos)
 	clear_stubs()
 	display_stubs()
 
