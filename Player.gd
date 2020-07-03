@@ -12,6 +12,10 @@ export var packed_flagellum: PackedScene
 export var packed_brain: PackedScene
 export var packed_stub: PackedScene
 
+puppet var target_transform
+puppet var target_velocity
+const LERP_SPEED = 5
+
 func _ready():
 	# initialize cells
 
@@ -30,6 +34,11 @@ func _ready():
 		set_process_input(true)
 	else:
 		set_process_input(false)
+
+func _physics_process(delta):
+	if is_network_master():
+		rset_unreliable("target_transform", transform)
+		rset_unreliable("target_velocity", linear_velocity)
 
 func get_neighbors(pos: Vector2):
 	# UP, UP-RIGHT, DOWN-RIGHT, DOWN, DOWN-LEFT, UP-LEFT
@@ -135,6 +144,17 @@ func _integrate_forces(state):
 				node.position -= center_mass
 			elif node.is_in_group("ui"):
 				node.rect_position -= center_mass
+
+	if not is_network_master():
+		state.set_linear_velocity(
+			state.get_linear_velocity().linear_interpolate(
+				target_velocity, state.get_step()
+			)
+		)
+
+		state.transform = state.transform.interpolate_with(
+			target_transform, state.get_step()
+		)
 
 func display_stub(hexpos: Vector2):
 	var stub = packed_stub.instance()
