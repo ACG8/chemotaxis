@@ -14,3 +14,4 @@ packed_brain = ExtResource( 5 )
 packed_stub = ExtResource( 4 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
+rotating = true

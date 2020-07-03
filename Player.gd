@@ -31,7 +31,7 @@ func _ready():
 	b3.key = "W"
 
 	if is_network_master():
-		set_process_input(true)
+		get_node("Camera2D").make_current()
 	else:
 		set_process_input(false)
 
