@@ -36,6 +36,7 @@ func _on_mouse_exited():
 	if ghost_feature == null:
 		return
 	ghost_feature.queue_free()
+	ghost_feature = null
 
 func _on_clicked():
 	if ghost_feature != null and ghost_feature.is_valid_placement:
