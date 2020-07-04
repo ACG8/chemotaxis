@@ -104,6 +104,7 @@ remotesync func add_cell(index: int, hexpos: Vector2):
 		origin = nucleus.position
 	cell.position = (hexpos.x * HEX_BASIS_A + hexpos.y * HEX_BASIS_B) * CELL_SEPARATION + origin
 	cell.hexpos = hexpos
+	cell.player = self
 	cell.set_network_master(get_network_master())
 	add_child(cell)
 	# connect to control cells

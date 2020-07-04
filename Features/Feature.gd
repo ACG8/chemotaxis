@@ -5,7 +5,7 @@ extends Area2D
 export var separation: int
 var is_ghost = false
 var is_valid_placement = false
-onready var player: RigidBody2D = get_parent().get_parent()
+var player: RigidBody2D
 
 func _ready():
 	if is_ghost:

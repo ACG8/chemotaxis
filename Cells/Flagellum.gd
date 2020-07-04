@@ -1,6 +1,5 @@
 extends "res://Cells/Cell.gd"
 
-onready var player: RigidBody2D = get_parent()
 export var strength = 15
 
 func _physics_process(delta):

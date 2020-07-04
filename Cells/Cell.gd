@@ -5,6 +5,7 @@ var hexpos
 var is_active = false
 var color = Color(1, 1, 1)
 var ghost_feature: Area2D
+var player: RigidBody2D
 
 signal activity_update
 
@@ -68,4 +69,5 @@ remotesync func deactivate():
 remotesync func create_feature(index: int, tform: Transform2D):
 	var feature: Area2D = FeatureSingleton.feature_list[index].instance()
 	feature.transform = tform
+	feature.player = player
 	add_child(feature)
