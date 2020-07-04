@@ -38,6 +38,13 @@ func _on_mouse_exited():
 	ghost_feature.queue_free()
 	ghost_feature = null
 
+func _input(event):
+	if event is InputEventMouseButton and event.button_index == BUTTON_RIGHT:
+		if event.pressed and ghost_feature != null:
+			ghost_feature.queue_free()
+			ghost_feature = null
+
+
 func _on_clicked():
 	if ghost_feature != null and ghost_feature.is_valid_placement:
 		rpc("create_feature", FeatureSingleton.feature_index, ghost_feature.transform)
