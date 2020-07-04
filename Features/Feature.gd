@@ -11,6 +11,7 @@ var cell: CollisionShape2D
 func _ready():
 	if is_ghost:
 		get_node("Sprite").modulate = Color(0, 0, 1)
+		visible = false
 	else:
 		connect("area_entered", self, "_destroy_if_overlapping")
 
@@ -19,15 +20,13 @@ func _process(delta):
 		var local_position = cell.get_local_mouse_position()
 		position = local_position.normalized() * separation
 		rotation = local_position.angle()
+		visible = is_open_position(transform)
 
-		var overlapping_areas = get_overlapping_areas()
-		overlapping_areas.erase(cell.get_node("Area2D"))
-		if overlapping_areas.size() == 0:
-			is_valid_placement = true
-			visible = true
-		else:
-			is_valid_placement = false
-			visible = false
+func is_open_position(tform: Transform2D):
+	transform = tform
+	var overlapping_areas = get_overlapping_areas()
+	overlapping_areas.erase(cell.get_node("Area2D"))
+	return overlapping_areas.size() == 0
 
 func _destroy_if_overlapping(area):
 	if area == get_parent().get_node("Area2D") or area == self:

@@ -48,8 +48,10 @@ func _input(event):
 
 
 func _on_clicked():
-	if ghost_feature != null and ghost_feature.is_valid_placement:
-		rpc("create_feature", FeatureSingleton.feature_index, ghost_feature.transform)
+	if ghost_feature != null:
+		var tform = ghost_feature.transform
+		if ghost_feature.is_open_position(tform):
+			rpc("create_feature", FeatureSingleton.feature_index, tform)
 	get_node("Sprite").modulate = Color(1, 0, 0)
 
 func _on_unclicked():
