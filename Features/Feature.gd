@@ -6,6 +6,7 @@ export var separation: int
 var is_ghost = false
 var is_valid_placement = false
 var player: RigidBody2D
+var cell: CollisionShape2D
 
 func _ready():
 	if is_ghost:
@@ -15,12 +16,12 @@ func _ready():
 
 func _process(delta):
 	if is_ghost:
-		var local_position= get_parent().get_local_mouse_position()
+		var local_position = cell.get_local_mouse_position()
 		position = local_position.normalized() * separation
 		rotation = local_position.angle()
 
 		var overlapping_areas = get_overlapping_areas()
-		overlapping_areas.erase(get_parent().get_node("Area2D"))
+		overlapping_areas.erase(cell.get_node("Area2D"))
 		if overlapping_areas.size() == 0:
 			is_valid_placement = true
 			visible = true

@@ -31,6 +31,7 @@ func _on_mouse_entered():
 
 	ghost_feature = FeatureSingleton.feature_list[index].instance()
 	ghost_feature.is_ghost = true
+	ghost_feature.cell = self
 	add_child(ghost_feature)
 
 func _on_mouse_exited():
@@ -70,4 +71,5 @@ remotesync func create_feature(index: int, tform: Transform2D):
 	var feature: Area2D = FeatureSingleton.feature_list[index].instance()
 	feature.transform = tform
 	feature.player = player
+	feature.cell = self
 	add_child(feature)
