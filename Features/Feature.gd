@@ -9,6 +9,8 @@ var is_valid_placement = false
 func _ready():
 	if is_ghost:
 		get_node("Sprite").modulate = Color(0, 0, 1)
+	else:
+		connect("area_entered", self, "_destroy_if_overlapping")
 
 func _process(delta):
 	if is_ghost:
@@ -24,3 +26,14 @@ func _process(delta):
 		else:
 			is_valid_placement = false
 			visible = false
+
+func _destroy_if_overlapping(area):
+	if area == get_parent().get_node("Area2D") or area == self:
+		return
+	if area.get_network_master() != get_network_master():
+		return
+
+	if area.is_in_group("cells"):
+		queue_free()
+	if area.is_in_group("features") and not area.is_ghost:
+		queue_free()
