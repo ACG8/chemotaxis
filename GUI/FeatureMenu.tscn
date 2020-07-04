@@ -1,17 +1,14 @@
-[gd_scene load_steps=3 format=2]
-
-[ext_resource path="res://Features/Flagellum.tscn" type="PackedScene" id=1]
+[gd_scene load_steps=2 format=2]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends ItemList
 
-export (Array, PackedScene) var packed_features
-
 func _ready():
 	self.connect(\"item_selected\", self, \"_item_selected\")
-	for packed_feature in packed_features:
+	for packed_feature in FeatureSingleton.feature_list:
 		var feature = packed_feature.instance()
 		add_icon_item(feature.get_node(\"Sprite\").texture)
+		feature.queue_free()
 
 func _item_selected(index: int):
 	FeatureSingleton.feature_index = index
@@ -48,4 +45,3 @@ script = SubResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-packed_features = [ ExtResource( 1 ) ]
